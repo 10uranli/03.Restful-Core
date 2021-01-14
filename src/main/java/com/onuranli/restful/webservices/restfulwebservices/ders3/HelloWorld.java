@@ -13,4 +13,8 @@ public class HelloWorld {
 		Team team = new Team(String.format(" Gs: %s", teamName));
 		return team;
 	}
+	@RequestMapping(method = RequestMethod.GET, path = "/getTeam/{teamName}/{rank}")
+	public int getTeamNameWithRanking(@PathVariable int rank){
+		return rank;
+	}
 }

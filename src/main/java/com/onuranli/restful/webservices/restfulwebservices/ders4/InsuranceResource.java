@@ -32,7 +32,7 @@ public class InsuranceResource {
 		InsuredBean findById = insuranceDao.findById(id);
 		
 		if(findById == null)
-			throw new InsureNotFoundException("id-" + id);
+			throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
 		return findById;
 	}
 	//POST Created return : created uri 
