@@ -75,7 +75,7 @@ public class InsuranceResource {
 		
 		EntityModel<InsuredBean> resource = new EntityModel<InsuredBean>(findById);
 		WebMvcLinkBuilder linkTo = 
-				linkTo(methodOn(this.getClass()).retrieveAllInsured());
+				linkTo(methodOn(this.getClass()).retrieveAllInsured());//linkTo ile hangi 
 		
 		resource.add(linkTo.withRel("all-insures"));//withRel ile all linkine referans verilir
 		//HATEOAS
