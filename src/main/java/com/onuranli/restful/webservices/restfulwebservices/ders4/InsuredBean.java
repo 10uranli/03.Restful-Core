@@ -2,10 +2,13 @@ package com.onuranli.restful.webservices.restfulwebservices.ders4;
 
 import java.util.Date;
 
+import javax.validation.constraints.Size;
+
 //Sigortalı bilgilerini tutan bean
 public class InsuredBean{
 	
 	private Integer id;
+	@Size(min = 2, message = "min 2 characters!") 
 	private String name;
 	private String surname;
 	private Date insuranceDate;

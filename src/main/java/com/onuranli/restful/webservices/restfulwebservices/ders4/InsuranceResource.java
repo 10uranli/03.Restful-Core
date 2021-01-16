@@ -3,6 +3,8 @@ package com.onuranli.restful.webservices.restfulwebservices.ders4;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +45,7 @@ public class InsuranceResource {
 //	}
 //	
 	@PostMapping("/Insures")
-	public ResponseEntity<Object> createInsured(@RequestBody InsuredBean insuredBean){
+	public ResponseEntity<Object> createInsured(@Valid @RequestBody InsuredBean insuredBean){
 		InsuredBean savedInsure = insuranceDao.save(insuredBean); //normal save
 		//uri ve response status dönmek için
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedInsure.getId()).toUri();
