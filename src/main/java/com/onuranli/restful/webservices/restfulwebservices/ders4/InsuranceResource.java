@@ -6,6 +6,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;/*operasyonları dogrudan kullanabilmek icin*/
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,5 +62,23 @@ public class InsuranceResource {
 		InsuredBean insure = insuranceDao.deleteById(id);
 		if(insure == null)
 			throw new InsureNotFoundException("id-" + id);
+	}
+	
+	//HATEOAS için eklendi
+	@GetMapping("/InsuresHateoas/{id}")//Normal get operasyonu ile yazılabilirdi.
+	public EntityModel<InsuredBean> retrieveInsuredWithHateoas(@PathVariable Integer id){
+		InsuredBean findById = insuranceDao.findById(id);
+		
+		if(findById == null)
+			throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
+		
+		
+		EntityModel<InsuredBean> resource = new EntityModel<InsuredBean>(findById);
+		WebMvcLinkBuilder linkTo = 
+				linkTo(methodOn(this.getClass()).retrieveAllInsured());//linkTo ile hangi 
+		
+		resource.add(linkTo.withRel("all-insures"));//withRel ile all linkine referans verilir
+		//HATEOAS
+		return resource;
 	}
 }
