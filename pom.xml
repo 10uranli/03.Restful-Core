@@ -60,10 +60,10 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<!-- microservices security -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId> 
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.boot</groupId>  -->
+<!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
+<!-- 		</dependency> -->
 		<!-- HAL spesifik bir formattır.Hypertext Application Language.How to hyperlink between resources in your api-->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
