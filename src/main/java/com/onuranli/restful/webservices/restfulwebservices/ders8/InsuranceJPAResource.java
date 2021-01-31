@@ -58,4 +58,18 @@ public class InsuranceJPAResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	
+	//GET /users/id
+		@GetMapping("/Insures/{id}/insurances")
+		public List<InsuranceBean> retrieveAllInsurances(@PathVariable Integer id){
+			Optional<InsuredBean> user = insuranceRepository.findById(id);
+			
+			if(!user.isPresent())/*null kontrolü yerine koydum*/
+				throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
+
+			return user.get().getInsurance();
+		}
+		
+	
+	
 }
