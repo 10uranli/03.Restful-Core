@@ -1,10 +1,12 @@
 package com.onuranli.restful.webservices.restfulwebservices.ders8;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
@@ -23,6 +25,9 @@ public class InsuredBean{
 	private String name;
 	private String surname;
 	private Date insuranceDate;
+	@ApiModelProperty(notes = "Dask, Konut gibi birden fazla poliçesi olabilsin")
+	@OneToMany(mappedBy = "insured")
+	private List<InsuranceBean> insurance;
 	
 	public InsuredBean() {
 		//save yaparken eğer default olmazsa hata alır.
@@ -57,6 +62,12 @@ public class InsuredBean{
 	}
 	public void setInsuranceDate(Date insuranceDate) {
 		this.insuranceDate = insuranceDate;
+	}
+	public List<InsuranceBean> getInsurance() {
+		return insurance;
+	}
+	public void setInsurance(List<InsuranceBean> insurance) {
+		this.insurance = insurance;
 	}
 	
 	
