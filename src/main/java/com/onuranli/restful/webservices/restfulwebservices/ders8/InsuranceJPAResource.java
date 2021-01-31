@@ -27,49 +27,69 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class InsuranceJPAResource {
 
 	@Autowired
-	private InsuranceRepository insuranceRepository;
+	private InsuredRepository insuredRepository;
 
+	@Autowired
+	private InsuranceRepository insuranceRepository;
 	
 	@GetMapping("/Insures")
-	public List<InsuredBean> retrieveAllInsured(){
-		return insuranceRepository.findAll();
+	public List<InsuredBean> retrieveAllInsured() {
+		return insuredRepository.findAll();
 	}
-	//GET /users/id
+
+	// GET /users/id
 	@GetMapping("/Insures/{id}")
-	public Optional<InsuredBean> retrieveInsured(@PathVariable Integer id){
-		Optional<InsuredBean> findById = insuranceRepository.findById(id);
-		
-		if(!findById.isPresent())/*null kontrolü yerine koydum*/
+	public Optional<InsuredBean> retrieveInsured(@PathVariable Integer id) {
+		Optional<InsuredBean> findById = insuredRepository.findById(id);
+
+		if (!findById.isPresent())/* null kontrolü yerine koydum */
 			throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
 		return findById;
 	}
-	
+
 	@DeleteMapping("/Insures/{id}")
-	public void deleteInsure(@PathVariable Integer id){
-		insuranceRepository.deleteById(id);
+	public void deleteInsure(@PathVariable Integer id) {
+		insuredRepository.deleteById(id);
 	}
-	
 
 	@PostMapping("/Insures")
-	public ResponseEntity<Object> createInsured(@Valid @RequestBody InsuredBean insuredBean){
-		InsuredBean savedInsure = insuranceRepository.save(insuredBean); //normal save
-		//uri ve response status dönmek için
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedInsure.getId()).toUri();
+	public ResponseEntity<Object> createInsured(@Valid @RequestBody InsuredBean insuredBean) {
+		InsuredBean savedInsure = insuredRepository.save(insuredBean); // normal
+																			// save
+		// uri ve response status dönmek için
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedInsure.getId())
+				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	
-	//GET /users/id
-		@GetMapping("/Insures/{id}/insurances")
-		public List<InsuranceBean> retrieveAllInsurances(@PathVariable Integer id){
-			Optional<InsuredBean> user = insuranceRepository.findById(id);
-			
-			if(!user.isPresent())/*null kontrolü yerine koydum*/
-				throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
 
-			return user.get().getInsurance();
-		}
+	@GetMapping("/Insures/{id}/insurances")
+	public List<InsuranceBean> retrieveAllInsurances(@PathVariable Integer id) {
+		Optional<InsuredBean> user = insuredRepository.findById(id);
+
+		if (!user.isPresent())/* null kontrolü yerine koydum */
+			throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
+
+		return user.get().getInsurance();
+	}
+
+	
+	@PostMapping("/Insures/{id}/insurances")
+	public ResponseEntity<Object> createInsurance(@PathVariable int id, @RequestBody InsuranceBean insurance) {
+		/*Sigortalıyı aldık*/
+		Optional<InsuredBean> user = insuredRepository.findById(id);
+		if (!user.isPresent())
+			throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
 		
-	
-	
+		/*Sigortaya sigortalıyı ekledik*/
+		InsuredBean insuredBean = user.get();
+		insurance.setInsured(insuredBean);
+		
+		insuranceRepository.save(insurance); // normal
+																			// save
+		// uri ve response status dönmek için
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(insurance.getId())
+				.toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
 }
