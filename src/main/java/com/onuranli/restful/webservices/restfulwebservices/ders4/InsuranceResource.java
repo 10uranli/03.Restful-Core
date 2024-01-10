@@ -2,6 +2,7 @@ package com.onuranli.restful.webservices.restfulwebservices.ders4;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -12,12 +13,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;/*operasyonları dogrudan kullanabilmek icin*/
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 //rest service controller
@@ -42,6 +38,14 @@ public class InsuranceResource {
 			throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
 		return findById;
 	}
+	@RequestMapping(method = RequestMethod.GET, path = "/InsuresWStream/{id}")
+	public Optional<InsuredBean> retrieveInsuredWithStream(@PathVariable Integer id){
+		Optional<InsuredBean> bean = insuranceDao.findByStream(id);
+
+		if(!bean.isPresent())
+			throw new InsureNotFoundException("id : " + id + " nolu sigortalı bulunamadı");
+		return bean;
+	}
 	//POST Created return : created uri 
 //	@PostMapping("/Insures")
 //	public void createInsured(@RequestBody InsuredBean insuredBean){
@@ -56,7 +60,10 @@ public class InsuranceResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedInsure.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
+	/* @PutMapping("/update") put update eder tum objeyi.Bos yollarsan ornegin null olur diger degerler
+	* @PatchMapping gonderilen alani digerlerine dokunmaz*/
+
 	@DeleteMapping("/Insures/{id}")
 	public void deleteInsure(@PathVariable Integer id){
 		InsuredBean insure = insuranceDao.deleteById(id);

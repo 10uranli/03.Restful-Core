@@ -3,10 +3,7 @@ package com.onuranli.restful.webservices.restfulwebservices.ders4;
  * DB jpa ileride olacağı için şimdilik kendimiz static bir veri deposu yapalım
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.stereotype.Component;
 
@@ -23,7 +20,8 @@ public class InsuranceDao {
 	public List<InsuredBean> findAll(){
 		return insuredList;
 	}
-	
+
+
 	public InsuredBean findById(Integer id){
 		for (InsuredBean insuredBean : insuredList) {
 			if(insuredBean.getId().equals(id)){
@@ -31,6 +29,10 @@ public class InsuranceDao {
 			}
 		}
 		return null;
+	}
+
+	public Optional<InsuredBean> findByStream(Integer id){
+        return insuredList.stream().filter(insuredBean -> insuredBean.getId().equals(id)).findFirst();
 	}
 	
 	public InsuredBean save(InsuredBean insuredBean){
