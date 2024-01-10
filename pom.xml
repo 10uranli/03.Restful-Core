@@ -8,9 +8,10 @@
 		<version>2.2.2.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.onuranli.restful</groupId>
-	<artifactId>restful-core</artifactId>
+	<groupId>com.onuranli.restful.webservices</groupId>
+	<artifactId>restful-web-services</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>restful-web-services </name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
